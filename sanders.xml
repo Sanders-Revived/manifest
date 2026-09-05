@@ -1,5 +1,3 @@
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
 <manifest>
     <!-- Trees -->
     <project name="Sanders-Revived/device_motorola_sanders" path="device/motorola/sanders" revision="15.0" remote="github" />
@@ -10,4 +8,4 @@
     <project name="LineageOS/android_hardware_motorola" path="hardware/motorola" remote="github" />
     <project path="system/tools/dtbtool" name="LineageOS/android_system_tools_dtbtool" revision="lineage-18.1" />
 </manifest>
-```
+
