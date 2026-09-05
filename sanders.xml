@@ -1,0 +1,13 @@
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+    <!-- Trees -->
+    <project name="Sanders-Revived/device_motorola_sanders" path="device/motorola/sanders" revision="15.0" remote="github" />
+    <project name="Sanders-Revived/kernel_motorola_msm8953" path="kernel/motorola/msm8953" revision="4.9.337" remote="github" />
+    <project name="Sanders-Revived/vendor_motorola_sanders" path="vendor/motorola/sanders" revision="15.0" remote="github" />
+
+    <!-- Additional Hardware -->
+    <project name="LineageOS/android_hardware_motorola" path="hardware/motorola" remote="github" />
+    <project path="system/tools/dtbtool" name="LineageOS/android_system_tools_dtbtool" revision="lineage-18.1" />
+</manifest>
+```
