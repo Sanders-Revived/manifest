@@ -1,0 +1,49 @@
+From ffb9bf764c5d8767797fc1602abf72015fd89048 Mon Sep 17 00:00:00 2001
+From: L1ghtzin <lightzin021@gmail.com>
+Date: Sat, 19 Sep 2026 23:09:46 +0000
+Subject: [PATCH] build: Support separate recovery kernel via
+ TARGET_KERNEL_RECOVERY_CONFIG
+
+Change-Id: I953832fd13cd76537b4a5285156fa0046345adf1
+---
+ core/Makefile | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/core/Makefile b/core/Makefile
+index b8c418940c..a502645a17 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -1017,6 +1017,18 @@ else
+   INSTALLED_KERNEL_TARGET :=
+ endif
+ 
++ifdef INSTALLED_KERNEL_TARGET
++ifneq (,$(filter true,$(BOARD_USES_RECOVERY_AS_BOOT)))
++  INSTALLED_RECOVERY_KERNEL_TARGET := $(INSTALLED_KERNEL_TARGET)
++else ifneq (true,$(BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE))
++  ifneq "$(or $(TARGET_KERNEL_RECOVERY_CONFIG), $(TARGET_PREBUILT_RECOVERY_KERNEL))" ""
++    INSTALLED_RECOVERY_KERNEL_TARGET := $(PRODUCT_OUT)/recovery_kernel
++  else
++    INSTALLED_RECOVERY_KERNEL_TARGET := $(firstword $(INSTALLED_KERNEL_TARGET))
++  endif
++endif
++endif
++
+ # -----------------------------------------------------------------
+ # the root dir
+ INSTALLED_FILES_OUTSIDE_IMAGES := $(filter-out $(TARGET_ROOT_OUT)/%, $(INSTALLED_FILES_OUTSIDE_IMAGES))
+@@ -2477,7 +2489,11 @@ IGNORE_RECOVERY_SEPOLICY := $(patsubst $(TARGET_RECOVERY_OUT)/%,--exclude=/%,$(r
+ 
+ # if building multiple boot images from multiple kernels, use the first kernel listed
+ # for the recovery image
++ifdef INSTALLED_RECOVERY_KERNEL_TARGET
++recovery_kernel := $(INSTALLED_RECOVERY_KERNEL_TARGET)
++else
+ recovery_kernel := $(firstword $(INSTALLED_KERNEL_TARGET))
++endif
+ recovery_ramdisk := $(PRODUCT_OUT)/ramdisk-recovery.img
+ recovery_uncompressed_ramdisk := $(PRODUCT_OUT)/ramdisk-recovery.cpio
+ recovery_resources_common := bootable/recovery/res
+-- 
+2.43.0
+
