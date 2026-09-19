@@ -19,10 +19,19 @@ This repository contains the local manifests for building LineageOS (or other AO
    repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
    ```
 
-4. Set up the build environment and start building!
+4. Apply all required patches:
+   ```bash
+   for patch in $(find .repo/local_manifests -name "*.patch" | sort); do git -C "$(dirname "${patch#.repo/local_manifests/}")" am "$PWD/$patch"; done
+   ```
+   *(Or individually)*:
+   ```bash
+   git -C build/make am "$PWD"/.repo/local_manifests/build/make/*.patch
+   git -C vendor/lineage am "$PWD"/.repo/local_manifests/vendor/lineage/*.patch
+   ```
+
+5. Set up the build environment and start building!
    ```bash
    source build/envsetup.sh
    breakfast sanders
    brunch sanders
    ```
-
