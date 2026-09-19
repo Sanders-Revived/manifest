@@ -4,18 +4,20 @@
     <project name="Sanders-Revived/kernel_motorola_msm8953" path="kernel/motorola/msm8953" revision="sanders/4.19/rebased" remote="github" />
     <project name="Sanders-Revived/vendor_motorola_sanders" path="vendor/motorola/sanders" revision="16.0" remote="github" />
 
-    <!-- Remove Stock HALs -->
-    <remove-project name="LineageOS/android_hardware_qcom_audio" />
-    <remove-project name="LineageOS/android_hardware_qcom_display" />
-    <remove-project name="LineageOS/android_hardware_qcom_media" />
-
-    <!-- 4.19 HALs -->
-    <project path="hardware/qcom-caf/msm8996/audio" name="Sanders-Revived/android_hardware_qcom_audio" revision="lineage-22.2-caf-msm8996-4.19" remote="github" />
-    <project path="hardware/qcom-caf/msm8996/display" name="Sanders-Revived/android_hardware_qcom_display" revision="lineage-22.2-caf-msm8996-4.19" remote="github" />
-    <project path="hardware/qcom-caf/msm8996/media" name="Sanders-Revived/android_hardware_qcom_media" revision="lineage-22.2-caf-msm8996-4.19" remote="github" />
+    <!-- MiThorium HALs (msm8953, LA.UM.9.6.4 QSSI) -->
+    <project path="hardware/mithorium/common" name="Mi-Thorium/android_hardware_mithorium_common" groups="device" remote="github" revision="lineage">
+        <linkfile src="_Android.mk" dest="hardware/mithorium/Android.mk" />
+        <linkfile src="mithorium_qcom_hals.mk" dest="hardware/mithorium/mithorium_qcom_hals.mk" />
+        <linkfile src="guard-generic.bp" dest="hardware/mithorium/audio/LA.UM.9.6.4.r2-04300-89xx.QSSI13r2.0/Android.bp" />
+        <linkfile src="guard-qcom-qssi-display-lineage-19.1.bp" dest="hardware/mithorium/display/LA.UM.9.6.4.r2-04300-89xx.QSSI13r2.0/Android.bp" />
+        <linkfile src="guard-qcom-qssi-display.mk" dest="hardware/mithorium/display/LA.UM.9.6.4.r2-04300-89xx.QSSI13r2.0/Android.mk" />
+    </project>
+    <project path="hardware/mithorium/display/LA.UM.9.6.4.r2-04300-89xx.QSSI13r2.0/display" name="LineageOS/android_vendor_qcom_opensource_display-commonsys-intf" groups="qcom,pdk-qcom" remote="github" revision="lineage-23.2" />
+    <project path="hardware/mithorium/audio/LA.UM.9.6.4.r2-04300-89xx.QSSI13r2.0/hal" name="mido-nxt/android_hardware_qcom_audio_mithorium" groups="device" remote="github" revision="mithorium/LA.UM.9.6.4.r2-04300-89xx.QSSI13r2.0" />
+    <project path="hardware/mithorium/media/LA.UM.9.6.4.r2-04300-89xx.QSSI13r2.0/hal" name="Mi-Thorium/android_hardware_qcom_media_mithorium" groups="device" remote="github" revision="mithorium/LA.UM.9.6.4.r2-04300-89xx.QSSI13r2.0" />
+    <project path="hardware/mithorium/display/LA.UM.9.6.4.r2-04300-89xx.QSSI13r2.0/hal" name="Mi-Thorium/android_hardware_qcom_display_mithorium" groups="device" remote="github" revision="mithorium/LA.UM.9.6.4.r2-04300-89xx.QSSI13r2.0" />
 
     <!-- Additional Hardware -->
     <project name="LineageOS/android_hardware_motorola" path="hardware/motorola" revision="lineage-23.2" remote="github" />
     <project path="system/tools/dtbtool" name="LineageOS/android_system_tools_dtbtool" revision="lineage-18.1" />
 </manifest>
-
