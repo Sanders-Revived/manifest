@@ -27,6 +27,7 @@ This repository contains the local manifests for building LineageOS (or other AO
    ```bash
    git -C build/make am "$PWD"/.repo/local_manifests/build/make/*.patch
    git -C vendor/lineage am "$PWD"/.repo/local_manifests/vendor/lineage/*.patch
+   git -C system/tools/mkbootimg am "$PWD"/.repo/local_manifests/system/tools/mkbootimg/*.patch
    ```
 
 5. Set up the build environment and start building!
