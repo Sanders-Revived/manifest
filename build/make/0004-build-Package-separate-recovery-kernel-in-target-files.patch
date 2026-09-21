@@ -1,0 +1,32 @@
+From 2c9d622413a7b47d1ebd5f03249721467de77e3f Mon Sep 17 00:00:00 2001
+From: L1ghtzin <lightzin021@gmail.com>
+Date: Mon, 21 Sep 2026 00:05:10 +0000
+Subject: [PATCH] build: package separate recovery kernel in target-files
+
+Change-Id: I099eb9786c4f7f78d6325cac4b2dfde76f7b6c96
+---
+ core/Makefile | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/core/Makefile b/core/Makefile
+index e7ee56c58b..5094f0cfcf 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -6699,12 +6699,8 @@ endif
+ 	@# OTA install helpers
+ 	$(hide) $(call package_files-copy-root, \
+ 	    $(PRODUCT_OUT)/install,$(zip_root)/INSTALL)
+-ifdef INSTALLED_KERNEL_TARGET
+-ifneq (,$(filter true,$(BOARD_USES_RECOVERY_AS_BOOT)))
+-	cp $(INSTALLED_KERNEL_TARGET) $(zip_root)/$(PRIVATE_RECOVERY_OUT)/
+-else ifneq (true,$(BOARD_EXCLUDE_KERNEL_FROM_RECOVERY_IMAGE))
+-	cp $(firstword $(INSTALLED_KERNEL_TARGET)) $(zip_root)/$(PRIVATE_RECOVERY_OUT)/kernel
+-endif
++ifdef INSTALLED_RECOVERY_KERNEL_TARGET
++	cp $(INSTALLED_RECOVERY_KERNEL_TARGET) $(zip_root)/$(PRIVATE_RECOVERY_OUT)/kernel
+ endif
+ ifneq (truetrue,$(strip $(BUILDING_VENDOR_BOOT_IMAGE))$(strip $(BOARD_USES_RECOVERY_AS_BOOT)))
+ ifdef INSTALLED_2NDBOOTLOADER_TARGET
+-- 
+2.43.0
+
