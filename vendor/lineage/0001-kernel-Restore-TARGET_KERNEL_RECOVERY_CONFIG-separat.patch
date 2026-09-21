@@ -197,12 +197,7 @@ index bf5c3612..ac543127 100644
 +
  .PHONY: kernel
  kernel: $(INSTALLED_KERNEL_TARGET)
- 
-@@ -845,3 +932,4 @@ dtbimage: $(INSTALLED_DTBIMAGE_TARGET)
- 
- endif # TARGET_NO_KERNEL_OVERRIDE
- endif # TARGET_NO_KERNEL
-+
+
 -- 
 2.43.0
 
