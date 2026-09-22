@@ -1,7 +1,7 @@
 <manifest>
     <!-- Trees -->
     <project name="Sanders-Revived/device_motorola_sanders" path="device/motorola/sanders" revision="16.0" remote="github" />
-    <project name="Sanders-Revived/kernel_motorola_msm8953" path="kernel/motorola/msm8953" revision="sanders/4.19/rebased" remote="github" />
+    <project name="Sanders-Revived/kernel_motorola_msm8953" path="kernel/motorola/msm8953" revision="4.19.325-WIP" remote="github" />
     <project name="Sanders-Revived/vendor_motorola_sanders" path="vendor/motorola/sanders" revision="16.0" remote="github" />
 
     <!-- MiThorium HALs (msm8953, LA.UM.9.6.4 QSSI) -->
