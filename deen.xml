@@ -4,9 +4,6 @@
     <project name="SHANDZIN/kernel_motorola_msm8953" path="kernel/motorola/msm8953" revision="lineage-22.2" remote="github" />
     <project name="Sanders-Revived/vendor_motorola_deen" path="vendor/motorola/deen" revision="15.0" remote="github" />
 
-    <!-- Additional Hardware -->
-    <project name="LineageOS/android_hardware_motorola" path="hardware/motorola" remote="github" />
-
     <!-- MiThorium HALs (msm8953, LA.UM.9.6.4 QSSI) -->
     <project path="hardware/mithorium/common" name="Mi-Thorium/android_hardware_mithorium_common" groups="device" remote="github" revision="lineage">
         <linkfile src="_Android.mk" dest="hardware/mithorium/Android.mk" />
