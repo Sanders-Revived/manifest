@@ -1,0 +1,78 @@
+From 5b4174acfdb9ae9fe7e04b3017930be017b0d391 Mon Sep 17 00:00:00 2001
+From: L1ghtzin <lightzin021@gmail.com>
+Date: Sun, 20 Sep 2026 00:35:57 +0000
+Subject: [PATCH] build: Support BOARD_KERNEL_SEPARATED_DT for legacy boot
+ images
+
+Change-Id: Iff354c4d0a1e57954e97c2b31546ce7c35fe4bae
+---
+ core/Makefile                | 15 +++++++++++++++
+ tools/releasetools/common.py |  5 +++++
+ 2 files changed, 20 insertions(+)
+
+diff --git a/core/Makefile b/core/Makefile
+index a502645a17..e7ee56c58b 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -1340,6 +1340,11 @@ ifndef BUILDING_VENDOR_BOOT_IMAGE
+ ifdef BOARD_INCLUDE_DTB_IN_BOOTIMG
+   INTERNAL_BOOTIMAGE_ARGS += --dtb $(INSTALLED_DTBIMAGE_TARGET)
+ endif
++ifeq ($(strip $(BOARD_KERNEL_SEPARATED_DT)),true)
++  INSTALLED_DTIMAGE_TARGET := $(PRODUCT_OUT)/dt.img
++  INTERNAL_BOOTIMAGE_ARGS += --dt $(INSTALLED_DTIMAGE_TARGET)
++  BOOTIMAGE_EXTRA_DEPS    += $(INSTALLED_DTIMAGE_TARGET)
++endif
+ endif
+ 
+ INTERNAL_BOOTIMAGE_FILES := $(filter-out --%,$(INTERNAL_BOOTIMAGE_ARGS))
+@@ -2767,6 +2772,10 @@ endif
+ ifdef BOARD_INCLUDE_DTB_IN_BOOTIMG
+   INTERNAL_RECOVERYIMAGE_ARGS += --dtb $(INSTALLED_DTBIMAGE_TARGET)
+ endif
++ifeq ($(strip $(BOARD_KERNEL_SEPARATED_DT)),true)
++  INTERNAL_RECOVERYIMAGE_ARGS += --dt $(INSTALLED_DTIMAGE_TARGET)
++  RECOVERYIMAGE_EXTRA_DEPS    := $(INSTALLED_DTIMAGE_TARGET)
++endif
+ endif # (BUILDING_VENDOR_BOOT_IMAGE and BOARD_USES_RECOVERY_AS_BOOT)
+ ifndef BOARD_RECOVERY_MKBOOTIMG_ARGS
+   BOARD_RECOVERY_MKBOOTIMG_ARGS := $(BOARD_MKBOOTIMG_ARGS)
+@@ -6725,6 +6734,9 @@ endif
+ ifdef BOARD_KERNEL_PAGESIZE
+ 	echo "$(BOARD_KERNEL_PAGESIZE)" > $(zip_root)/$(PRIVATE_RECOVERY_OUT)/pagesize
+ endif
++ifeq ($(strip $(BOARD_KERNEL_SEPARATED_DT)),true)
++	cp $(INSTALLED_DTIMAGE_TARGET) $(zip_root)/$(PRIVATE_RECOVERY_OUT)/dt
++endif
+ endif # not (BUILDING_VENDOR_BOOT_IMAGE and BOARD_USES_RECOVERY_AS_BOOT)
+ endif # INSTALLED_RECOVERYIMAGE_TARGET defined or BOARD_USES_RECOVERY_AS_BOOT is true
+ 	@# Components of the boot image
+@@ -6752,6 +6764,9 @@ endif
+ ifdef BOARD_KERNEL_PAGESIZE
+ 	echo "$(BOARD_KERNEL_PAGESIZE)" > $(zip_root)/BOOT/pagesize
+ endif
++ifeq ($(strip $(BOARD_KERNEL_SEPARATED_DT)),true)
++	cp $(INSTALLED_DTIMAGE_TARGET) $(zip_root)/BOOT/dt
++endif
+ endif # INSTALLED_VENDOR_BOOTIMAGE_TARGET == "" && BOARD_USES_GENERIC_KERNEL_IMAGE != true
+ endif # BOARD_USES_RECOVERY_AS_BOOT not true
+ 	$(hide) $(foreach t,$(INSTALLED_RADIOIMAGE_TARGET),\
+diff --git a/tools/releasetools/common.py b/tools/releasetools/common.py
+index 3a49da7d7e..7ed04bc58d 100644
+--- a/tools/releasetools/common.py
++++ b/tools/releasetools/common.py
+@@ -1811,6 +1811,11 @@ def _BuildBootableImage(image_name, sourcedir, fs_config_file,
+     cmd.append("--pagesize")
+     cmd.append(open(fn).read().rstrip("\n"))
+ 
++  fn = os.path.join(sourcedir, "dt")
++  if os.access(fn, os.F_OK):
++    cmd.append("--dt")
++    cmd.append(fn)
++
+   if partition_name == "recovery":
+     args = info_dict.get("recovery_mkbootimg_args")
+     if not args:
+-- 
+2.43.0
+
