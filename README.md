@@ -4,14 +4,14 @@ This repository contains the local manifests for building LineageOS (or other AO
 
 ## How to use
 
-1. Initialize your ROM source tree (e.g. LineageOS 23.2).
+1. Initialize your ROM source tree (e.g. LineageOS 24.0).
    ```bash
-   repo init -u https://github.com/LineageOS/android.git -b lineage-23.2 --git-lfs --depth=1
+   repo init -u https://github.com/LineageOS/android.git -b lineage-24.0 --git-lfs --depth=1
    ```
 
 2. Clone this manifest repository into `.repo/local_manifests`:
    ```bash
-   git clone https://github.com/Sanders-Revived/manifest.git -b 16.0-4.9 .repo/local_manifests
+   git clone https://github.com/Sanders-Revived/manifest.git -b 17.0-4.9 .repo/local_manifests
    ```
 
 3. Sync the repositories:
@@ -33,7 +33,7 @@ This repository contains the local manifests for building LineageOS (or other AO
 5. Set up the build environment and start building!
    ```bash
    source build/envsetup.sh
-   breakfast sanders
-   brunch sanders
+   breakfast sanders user
+   m bacon
    ```
 
