@@ -1,28 +1,28 @@
-From ab0892e23a9cbf68b8b6688aec96201390ea3e28 Mon Sep 17 00:00:00 2001
+From 2cd53ab8a78ab9c3d1d14ee6dafe205ce0699808 Mon Sep 17 00:00:00 2001
 From: L1ghtzin <lightzin021@gmail.com>
-Date: Sat, 19 Sep 2026 23:09:57 +0000
+Date: Wed, 4 Nov 2026 00:34:12 +0000
 Subject: [PATCH] kernel: Restore TARGET_KERNEL_RECOVERY_CONFIG separate
  recovery kernel build support
 
 Change-Id: Ifefc53f4cfb88bada7048f81b51e91e8dd0c2cc6
 ---
- build/tasks/kernel.mk | 94 +++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 91 insertions(+), 3 deletions(-)
+ build/tasks/kernel.mk | 93 +++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 90 insertions(+), 3 deletions(-)
 
 diff --git a/build/tasks/kernel.mk b/build/tasks/kernel.mk
-index bf5c3612..ac543127 100644
+index bc9fd151..ea783cd0 100644
 --- a/build/tasks/kernel.mk
 +++ b/build/tasks/kernel.mk
-@@ -29,6 +29,9 @@
+@@ -28,6 +28,9 @@
+ #   TARGET_KERNEL_CONFIG_EXT           = List of path to external kernel defconfigs.
  #                                          Same as TARGET_KERNEL_CONFIG, but paths are specified
  #                                          instead of filenames.
- #
++#
 +#   TARGET_KERNEL_RECOVERY_CONFIG      = Same as above, but applicable to recovery kernel instead.
 +#   TARGET_KERNEL_RECOVERY_CONFIG_EXT  = Same as above, but applicable to recovery kernel instead.
-+#
- #   TARGET_KERNEL_CLANG_COMPILE        = Compile kernel with clang, defaults to true
+ #   TARGET_KERNEL_KCONFIG_EXT_PREFIX   = Optional, path to the directory where an external
+ #                                          Kconfig.ext is located.
  #
- #   BOARD_KERNEL_IMAGE_NAME            = Built image name
 @@ -114,6 +117,8 @@ endif
  MERGE_ALL_KERNEL_CONFIGS_AT_ONCE ?= false
  KERNEL_DEFCONFIG := $(TARGET_KERNEL_CONFIG)
@@ -115,8 +115,8 @@ index bf5c3612..ac543127 100644
 +ifeq ($(or $(FULL_RECOVERY_KERNEL_BUILD), $(FULL_KERNEL_BUILD)),true)
  # Add host bin out dir to path
  PATH_OVERRIDE := PATH=$(KERNEL_BUILD_OUT_PREFIX)$(HOST_OUT_EXECUTABLES):$$PATH
- ifneq ($(TARGET_KERNEL_CLANG_COMPILE),false)
-@@ -368,6 +419,12 @@ define make-kernel-target
+ ifeq ($(KERNEL_ARCH),arm64)
+@@ -360,6 +411,12 @@ define make-kernel-target
  $(call internal-make-kernel-target,$(KERNEL_OUT),$(1))
  endef
  
@@ -129,7 +129,7 @@ index bf5c3612..ac543127 100644
  # Make a DTBO target
  # $(1): The DTBO target to build (eg. dtbo.img, defconfig)
  define make-dtbo-target
-@@ -440,7 +497,7 @@ define build-image-kernel-modules-lineage
+@@ -432,7 +489,7 @@ define build-image-kernel-modules-lineage
      fi;
  endef
  
@@ -138,7 +138,7 @@ index bf5c3612..ac543127 100644
  
  ifneq ($(filter $(FULL_KERNEL_BUILD),true)$(TARGET_KERNEL_PLATFORM_TARGET),)
  
-@@ -629,7 +686,7 @@ $(TARGET_PREBUILT_INT_KERNEL): $(KERNEL_CONFIG) $(DEPMOD) $(DTC) $(KERNEL_MODULE
+@@ -621,7 +678,7 @@ $(TARGET_PREBUILT_INT_KERNEL): $(KERNEL_CONFIG) $(DEPMOD) $(DTC) $(KERNEL_MODULE
  kerneltags: $(KERNEL_CONFIG)
  	$(call make-kernel-target,tags)
  
@@ -147,7 +147,7 @@ index bf5c3612..ac543127 100644
  
  kernelsavedefconfig: $(KERNEL_OUT)
  	$(call make-kernel-config,$(KERNEL_OUT),$(BASE_KERNEL_DEFCONFIG_SRC))
-@@ -644,6 +701,10 @@ kernelconfig: $(KERNEL_OUT) $(ALL_KERNEL_DEFCONFIG_SRCS)
+@@ -636,6 +693,10 @@ kernelconfig: $(KERNEL_OUT) $(ALL_KERNEL_DEFCONFIG_SRCS)
  	@echo "Building Kernel Config"
  	$(call make-kernel-config,$(KERNEL_OUT),$(ALL_KERNEL_DEFCONFIG_SRCS))
  
@@ -158,7 +158,7 @@ index bf5c3612..ac543127 100644
  ifneq (,$(filter true, $(TARGET_NEEDS_DTBOIMAGE) $(BOARD_KERNEL_SEPARATED_DTBO)))
  ifneq ($(BOARD_CUSTOM_DTBOIMG_MK),)
  include $(BOARD_CUSTOM_DTBOIMG_MK)
-@@ -736,6 +797,21 @@ endif # BOARD_INCLUDE_DTB_IN_BOOTIMG
+@@ -728,6 +789,21 @@ endif # BOARD_INCLUDE_DTB_IN_BOOTIMG
  
  endif # FULL_KERNEL_BUILD
  
@@ -180,7 +180,7 @@ index bf5c3612..ac543127 100644
  ## Install it
  
  ifeq ($(FULL_KERNEL_BUILD),true)
-@@ -834,6 +910,17 @@ $(INSTALLED_KERNEL_TARGET): $(KERNEL_BIN)
+@@ -820,6 +896,17 @@ $(INSTALLED_KERNEL_TARGET): $(KERNEL_BIN)
  		$(call append-dtbs-to-kernel-image,$(KERNEL_OUT),$@))
  endif
  
@@ -197,7 +197,7 @@ index bf5c3612..ac543127 100644
 +
  .PHONY: kernel
  kernel: $(INSTALLED_KERNEL_TARGET)
-
+ 
 -- 
 2.43.0
 
