@@ -22,7 +22,7 @@ This repository contains the local manifests for building LineageOS (or other AO
 4. Set up the build environment and start building!
    ```bash
    source build/envsetup.sh
-   breakfast sanders
-   brunch sanders
+   breakfast sanders user
+   m bacon
    ```
 
