@@ -40,6 +40,6 @@ Local manifests and compatibility patches for building RisingOS Revived 9
 
    ```bash
    . build/envsetup.sh
-   riseup sanders userdebug
+   riseup sanders user
    rise b
    ```
