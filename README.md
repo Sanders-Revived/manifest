@@ -1,39 +1,45 @@
-# Sanders-Revived Local Manifests
+# Sanders-Revived RisingOS Local Manifest
 
-This repository contains the local manifests for building LineageOS (or other AOSP-based ROMs) for the Motorola G5s Plus (sanders).
+Local manifests and compatibility patches for building RisingOS Revived 9
+(Android 17) on the Motorola Moto G5S Plus (`sanders`).
 
-## How to use
+## Setup
 
-1. Initialize your ROM source tree (e.g. LineageOS 24.0).
+1. Initialize the RisingOS source tree:
+
    ```bash
-   repo init -u https://github.com/LineageOS/android.git -b lineage-24.0 --git-lfs --depth=1
+   repo init -u https://github.com/RisingOS-Revived/android -b seventeen --git-lfs
    ```
 
-2. Clone this manifest repository into `.repo/local_manifests`:
+2. Clone this repository into the local-manifests directory:
+
    ```bash
-   git clone https://github.com/Sanders-Revived/manifest.git -b 17.0-4.9 .repo/local_manifests
+   git clone -b rising-17 https://github.com/Sanders-Revived/manifest.git .repo/local_manifests
    ```
 
-3. Sync the repositories:
+3. Sync the source tree:
+
    ```bash
-   repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+   repo sync -c --no-clone-bundle --optimized-fetch --prune --force-sync -j"$(nproc --all)"
    ```
 
-4. Apply all required patches:
+4. From the root of the source tree, apply the compatibility patches:
+
    ```bash
-   for patch in $(find .repo/local_manifests -name "*.patch" | sort); do git -C "$(dirname "${patch#.repo/local_manifests/}")" am "$PWD/$patch"; done
-   ```
-   *(Or individually)*:
-   ```bash
-   git -C build/make am "$PWD"/.repo/local_manifests/build/make/*.patch
-   git -C vendor/lineage am "$PWD"/.repo/local_manifests/vendor/lineage/*.patch
-   git -C system/tools/mkbootimg am "$PWD"/.repo/local_manifests/system/tools/mkbootimg/*.patch
+   for patch in $(find .repo/local_manifests -name '*.patch' | sort); do
+       repo_path="${patch#.repo/local_manifests/}"
+       repo_dir="${repo_path%/*}"
+       git -C "$repo_dir" am "$PWD/$patch"
+   done
    ```
 
-5. Set up the build environment and start building!
-   ```bash
-   source build/envsetup.sh
-   breakfast sanders user
-   m bacon
-   ```
+   The patches add support for the separate recovery kernel configuration and
+   device tree used by the `sanders` legacy boot image.
 
+## Build
+
+   ```bash
+   . build/envsetup.sh
+   riseup sanders userdebug
+   rise b
+   ```

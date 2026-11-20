@@ -1,11 +1,14 @@
 <manifest>
+    <remote name="sanders" fetch="https://github.com/Sanders-Revived" />
+    <remote name="lineage" fetch="https://github.com/LineageOS" />
+
     <!-- Trees -->
-    <project name="Sanders-Revived/device_motorola_sanders" path="device/motorola/sanders" revision="17.0-4.9" remote="github" />
-    <project name="Sanders-Revived/kernel_motorola_msm8953" path="kernel/motorola/msm8953" revision="4.9.337-ebpf" remote="github" />
-    <project name="Sanders-Revived/vendor_motorola_sanders" path="vendor/motorola/sanders" revision="17.0-4.9" remote="github" />
+    <project name="device_motorola_sanders" path="device/motorola/sanders" revision="rising-17" remote="sanders" />
+    <project name="kernel_motorola_msm8953" path="kernel/motorola/msm8953" revision="4.9.337-ebpf" remote="sanders" />
+    <project name="vendor_motorola_sanders" path="vendor/motorola/sanders" revision="17.0-4.9" remote="sanders" />
 
     <!-- Additional Hardware -->
-    <project name="Sanders-Revived/android_hardware_motorola" path="hardware/motorola" revision="lineage-24.0" remote="github" />
-    <project path="system/tools/dtbtool" name="LineageOS/android_system_tools_dtbtool" revision="lineage-18.1" />
+    <project name="android_hardware_motorola" path="hardware/motorola" revision="lineage-24.0" remote="sanders" />
+    <project name="android_system_tools_dtbtool" path="system/tools/dtbtool" revision="lineage-18.1" remote="lineage" />
 </manifest>
 
